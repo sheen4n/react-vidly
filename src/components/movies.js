@@ -1,96 +1,114 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import _ from 'lodash';
 import { getMovies } from '../services/fakeMovieService';
-import Like from './common/like';
 import Pagination from './common/pagination';
 import { paginate } from '../utils/paginate';
+import ListGroup from './common/listGroup';
+import { getGenres } from '../services/fakeGenreService';
+import { useReducer } from 'react';
+import MoviesTable from './moviesTable';
+
+const initialState = {
+  allMovies: [],
+  genres: [{ _id: '', name: 'All Genres' }],
+  selectedGenre: null,
+  currentPage: 1,
+  sortColumn: { path: 'title', order: 'asc' }
+};
+
+const reducer = (state, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case 'LOAD_DATA':
+      return {
+        ...state,
+        genres: [...state.genres, ...payload.genres],
+        allMovies: payload.allMovies,
+        selectedGenre: state.genres[0]
+      };
+    case 'UPDATE_ALL_MOVIES':
+      return { ...state, allMovies: payload };
+
+    case 'SET_PAGE':
+      return { ...state, currentPage: payload };
+    case 'SELECT_GENRE':
+      return { ...state, selectedGenre: payload, currentPage: 1 };
+    case 'SORT_COLUMN':
+      return { ...state, sortColumn: payload };
+    default:
+      return state;
+  }
+};
 
 const Movies = () => {
-  const [allMovies, setAllMovies] = useState([]);
-
-  const [currentPage, setCurrentPage] = useState(1);
-
   const MAX_PAGE_SIZE = 4;
 
-  const columns = [
-    { id: 1, field: 'title', header: 'Title' },
-    { id: 2, field: 'genre', header: 'Genre' },
-    { id: 3, field: 'numberInStock', header: 'Stock' },
-    { id: 4, field: 'dailyRentalRate', header: 'Rate' },
-    { id: 5, header: '' },
-    { id: 6, header: '' }
-  ];
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    const data = getMovies();
-    setAllMovies(data);
+    dispatch({
+      type: 'LOAD_DATA',
+      payload: { allMovies: getMovies(), genres: getGenres() }
+    });
   }, []);
+
+  const { allMovies, genres, selectedGenre, currentPage, sortColumn } = state;
+
+  if (allMovies.count === 0) return <p> There are no movies in the database.</p>;
 
   const handleDelete = movie => {
     const updated = allMovies.filter(m => m._id !== movie._id);
-    setAllMovies(updated);
+    dispatch({ type: 'UPDATE_ALL_MOVIES', payload: updated });
   };
 
   const handleLike = movie => {
-    const updated = allMovies.map(m =>
-      m._id === movie._id ? { ...m, isLiked: !m.isLiked } : m
-    );
-    setAllMovies(updated);
+    const updated = allMovies.map(m => (m._id === movie._id ? { ...m, isLiked: !m.isLiked } : m));
+    dispatch({ type: 'UPDATE_ALL_MOVIES', payload: updated });
   };
 
-  const handlePageChange = page => setCurrentPage(page);
+  const handlePageChange = page => dispatch({ type: 'SET_PAGE', payload: page });
 
-  const movies = paginate(allMovies, currentPage, MAX_PAGE_SIZE);
+  const handleGenreSelect = genre => dispatch({ type: 'SELECT_GENRE', payload: genre });
 
-  const { length: count } = allMovies;
+  const handleSort = sortColumn => dispatch({ type: 'SORT_COLUMN', payload: sortColumn });
 
-  if (count === 0) return <p> There are no movies in the database.</p>;
+  const getPagedData = () => {
+    const filtered =
+      selectedGenre && selectedGenre._id
+        ? allMovies.filter(m => m.genre._id === selectedGenre._id)
+        : allMovies;
+
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+    const movies = paginate(sorted, currentPage, MAX_PAGE_SIZE);
+
+    return { totalCount: filtered.length, movies };
+  };
+
+  const { totalCount, movies } = getPagedData();
 
   return (
-    <>
-      <p>Displaying {count} movies in the database...</p>
-      <table className="table">
-        <thead>
-          <tr>
-            {columns.map(col => (
-              <th scope="col" key={col.id}>
-                {col.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {movies.map(movie => (
-            <tr key={movie._id}>
-              <td>{movie.title}</td>
-              <td>{movie.genre.name}</td>
-              <td>{movie.numberInStock}</td>
-              <td>{movie.dailyRentalRate}</td>
-              <td>
-                <Like
-                  isLiked={movie.isLiked}
-                  onClick={() => handleLike(movie)}
-                />
-              </td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(movie)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination
-        currentPage={currentPage}
-        itemsCount={allMovies.length}
-        pageSize={MAX_PAGE_SIZE}
-        onPageChange={handlePageChange}
-      />
-    </>
+    <div className="row">
+      <div className="col-3">
+        <ListGroup items={genres} selectedItem={selectedGenre} onItemSelect={handleGenreSelect} />
+      </div>
+      <div className="col">
+        <p>Displaying {totalCount} movies in the database...</p>
+        <MoviesTable
+          movies={movies}
+          onLike={handleLike}
+          onDelete={handleDelete}
+          sortColumn={sortColumn}
+          onSort={handleSort}
+        />
+        <Pagination
+          currentPage={currentPage}
+          itemsCount={totalCount}
+          pageSize={MAX_PAGE_SIZE}
+          onPageChange={handlePageChange}
+        />
+      </div>
+    </div>
   );
 };
 

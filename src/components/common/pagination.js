@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-const Pagination = ({ currentPage, itemsCount, onPageChange, pageSize }) => {
+const Pagination = ({ currentPage, itemsCount, pageSize, onPageChange }) => {
   const numOfPages = Math.ceil(itemsCount / pageSize);
 
   const isMultiPages = numOfPages > 1;
@@ -25,10 +25,7 @@ const Pagination = ({ currentPage, itemsCount, onPageChange, pageSize }) => {
         )}
 
         {pages.map(page => (
-          <li
-            key={page}
-            className={`page-item  ${page === currentPage && 'active'}`}
-          >
+          <li key={page} className={`page-item  ${page === currentPage && 'active'}`}>
             <span className="page-link" onClick={() => onPageChange(page)}>
               {page}
             </span>
@@ -37,10 +34,7 @@ const Pagination = ({ currentPage, itemsCount, onPageChange, pageSize }) => {
 
         {isMultiPages && (
           <li className={`page-item ${isLastPage && 'disabled'}`}>
-            <span
-              className="page-link"
-              onClick={() => onPageChange(numOfPages)}
-            >
+            <span className="page-link" onClick={() => onPageChange(numOfPages)}>
               Next
             </span>
           </li>
