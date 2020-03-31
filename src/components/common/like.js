@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Like = ({ isLiked, onClick }) => {
+const Like = ({ liked, onClick }) => {
   return (
     <i
       onClick={onClick}
-      className={`fa ${isLiked ? 'fa-heart' : 'fa-heart-o'}`}
+      className={`fa ${liked ? 'fa-heart' : 'fa-heart-o'}`}
       style={{ fontSize: 24, cursor: 'pointer' }}
     ></i>
   );

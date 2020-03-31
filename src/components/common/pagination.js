@@ -19,7 +19,7 @@ const Pagination = ({ currentPage, itemsCount, pageSize, onPageChange }) => {
         {isMultiPages && (
           <li className={`page-item ${isFirstPage && 'disabled'}`}>
             <span className="page-link" onClick={() => onPageChange(1)}>
-              Previous
+              First
             </span>
           </li>
         )}
@@ -35,7 +35,7 @@ const Pagination = ({ currentPage, itemsCount, pageSize, onPageChange }) => {
         {isMultiPages && (
           <li className={`page-item ${isLastPage && 'disabled'}`}>
             <span className="page-link" onClick={() => onPageChange(numOfPages)}>
-              Next
+              Last
             </span>
           </li>
         )}
