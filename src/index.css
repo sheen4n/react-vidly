@@ -11,3 +11,7 @@ body {
 .clickable {
   cursor: pointer;
 }
+
+.btn:disabled {
+  cursor: auto;
+}

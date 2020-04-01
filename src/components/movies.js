@@ -8,19 +8,12 @@ import { getGenres } from '../services/fakeGenreService';
 import MoviesTable from './moviesTable';
 
 import { Context as MoviesContext } from '../context/MoviesContext';
+import { Link } from 'react-router-dom';
 
 const Movies = () => {
   const MAX_PAGE_SIZE = 4;
 
-  const {
-    loadData,
-    deleteMovie,
-    toggleMovieLike,
-    selectPage,
-    selectGenre,
-    updateSortColumn,
-    state
-  } = useContext(MoviesContext);
+  const { loadData, deleteMovie, toggleMovieLike, selectPage, selectGenre, updateSortColumn, state } = useContext(MoviesContext);
 
   const loadDataFunc = useRef(loadData);
 
@@ -43,10 +36,7 @@ const Movies = () => {
   const handleSort = sortColumn => updateSortColumn(sortColumn);
 
   const getPagedData = () => {
-    const filtered =
-      selectedGenre && selectedGenre._id
-        ? allMovies.filter(m => m.genre._id === selectedGenre._id)
-        : allMovies;
+    const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m => m.genre._id === selectedGenre._id) : allMovies;
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -58,25 +48,17 @@ const Movies = () => {
   const { totalCount, movies } = getPagedData();
 
   return (
-    <div className="row">
-      <div className="col-3">
+    <div className='row'>
+      <div className='col-3'>
         <ListGroup items={genres} selectedItem={selectedGenre} onItemSelect={handleGenreSelect} />
       </div>
-      <div className="col">
+      <div className='col'>
+        <Link to='/movies/new' className='btn btn-primary' style={{ marginBottom: 20 }}>
+          New Movie
+        </Link>
         <p>Displaying {totalCount} movies in the database...</p>
-        <MoviesTable
-          movies={movies}
-          onLike={handleLike}
-          onDelete={handleDelete}
-          sortColumn={sortColumn}
-          onSort={handleSort}
-        />
-        <Pagination
-          currentPage={currentPage}
-          itemsCount={totalCount}
-          pageSize={MAX_PAGE_SIZE}
-          onPageChange={handlePageChange}
-        />
+        <MoviesTable movies={movies} onLike={handleLike} onDelete={handleDelete} sortColumn={sortColumn} onSort={handleSort} />
+        <Pagination currentPage={currentPage} itemsCount={totalCount} pageSize={MAX_PAGE_SIZE} onPageChange={handlePageChange} />
       </div>
     </div>
   );
