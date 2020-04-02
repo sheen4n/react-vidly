@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Like from './common/like';
 import Table from './common/table';
-import { Link } from 'react-router-dom';
 
 const MoviesTable = ({ movies, onLike, onDelete, onSort, sortColumn }) => {
   const COLUMNS = [
@@ -20,7 +20,7 @@ const MoviesTable = ({ movies, onLike, onDelete, onSort, sortColumn }) => {
     {
       key: 'delete',
       content: movie => (
-        <button onClick={() => onDelete(movie)} className="btn btn-danger btn-sm">
+        <button onClick={() => onDelete(movie)} className='btn btn-danger btn-sm'>
           Delete
         </button>
       )

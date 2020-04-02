@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Joi from '@hapi/joi';
 import { getMovie, saveMovie } from '../services/fakeMovieService';
+import { getGenres } from '../services/fakeGenreService';
 
 import Form from './common/form';
-import { getGenres } from '../services/fakeGenreService';
 
 const schema = {
   _id: Joi.string(),

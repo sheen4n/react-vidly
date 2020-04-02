@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Select = ({ name, value, dataSet, onChange }) => {
-  console.log(dataSet);
   return (
     <div className='form-group'>
       <label htmlFor={name}>Example select</label>
