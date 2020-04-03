@@ -32,6 +32,7 @@ const RegisterForm = ({ history }) => {
   const submitAction = async () => {
     try {
       const response = await register(newUser);
+      console.log(response);
       setJwt(response.headers['x-auth-token']);
       history.push('/');
     } catch (ex) {

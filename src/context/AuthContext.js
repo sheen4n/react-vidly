@@ -24,7 +24,7 @@ const logout = dispatch => () => dispatch({ type: 'logout' });
 
 const loadStorage = () => {
   const savedData = JSON.parse(window.localStorage.getItem('token'));
-  setHttpJwt(savedData.jwt);
+  savedData && setHttpJwt(savedData.jwt);
   return savedData || initialState;
 };
 

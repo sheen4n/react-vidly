@@ -3,7 +3,7 @@ import logger from './logService';
 import { toast } from 'react-toastify';
 import config from '../config.json';
 
-axios.defaults.baseURL = config.apiEndPoint;
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || config.apiEndPoint;
 
 axios.interceptors.response.use(null, error => {
   const expectedError = error.response && error.response.status >= 400 && error.response.status < 500;

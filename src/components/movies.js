@@ -119,6 +119,7 @@ const Movies = ({ history }) => {
         <button onClick={resetData} className="btn btn-success ml-3" style={{ marginBottom: 20 }}>
           Reset Data
         </button>
+
         <p>Displaying {totalCount} movies in the database...</p>
         <SearchBox query={query} onSearch={handleSearch} />
         <MoviesTable
