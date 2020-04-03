@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/react-vidly/static/css/main.a5bee8a7.chunk.css",
-    "main.js": "/react-vidly/static/js/main.2bb4e6e1.chunk.js",
-    "main.js.map": "/react-vidly/static/js/main.2bb4e6e1.chunk.js.map",
+    "main.js": "/react-vidly/static/js/main.db3c4629.chunk.js",
+    "main.js.map": "/react-vidly/static/js/main.db3c4629.chunk.js.map",
     "runtime-main.js": "/react-vidly/static/js/runtime-main.18f27294.js",
     "runtime-main.js.map": "/react-vidly/static/js/runtime-main.18f27294.js.map",
     "static/css/2.0e769a35.chunk.css": "/react-vidly/static/css/2.0e769a35.chunk.css",
     "static/js/2.1ad25414.chunk.js": "/react-vidly/static/js/2.1ad25414.chunk.js",
     "static/js/2.1ad25414.chunk.js.map": "/react-vidly/static/js/2.1ad25414.chunk.js.map",
     "index.html": "/react-vidly/index.html",
-    "precache-manifest.068409712f048996e009c18739cd757d.js": "/react-vidly/precache-manifest.068409712f048996e009c18739cd757d.js",
+    "precache-manifest.32af4d53ab8ab1d6cb885197ff4140b5.js": "/react-vidly/precache-manifest.32af4d53ab8ab1d6cb885197ff4140b5.js",
     "service-worker.js": "/react-vidly/service-worker.js",
     "static/css/2.0e769a35.chunk.css.map": "/react-vidly/static/css/2.0e769a35.chunk.css.map",
     "static/css/main.a5bee8a7.chunk.css.map": "/react-vidly/static/css/main.a5bee8a7.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.0e769a35.chunk.css",
     "static/js/2.1ad25414.chunk.js",
     "static/css/main.a5bee8a7.chunk.css",
-    "static/js/main.2bb4e6e1.chunk.js"
+    "static/js/main.db3c4629.chunk.js"
   ]
 }

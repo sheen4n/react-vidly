@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "78081e8bbd29ef346a4dd94f90f20058",
+    "revision": "cdb02fa8956c3df7b157f85dfe7b6ff9",
     "url": "/react-vidly/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-vidly/static/css/2.0e769a35.chunk.css"
   },
   {
-    "revision": "e06310baa332d3b0617b",
+    "revision": "7d86405267aeba4897c7",
     "url": "/react-vidly/static/css/main.a5bee8a7.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-vidly/static/js/2.1ad25414.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "e06310baa332d3b0617b",
-    "url": "/react-vidly/static/js/main.2bb4e6e1.chunk.js"
+    "revision": "7d86405267aeba4897c7",
+    "url": "/react-vidly/static/js/main.db3c4629.chunk.js"
   },
   {
     "revision": "be42e148fe5e83808ce4",
