@@ -1,6 +1,6 @@
 {
   "name": "react-vidly",
-  "homepage": "http://sheen4n.github.io/react-vidly",
+  "homepage": "https://vidly-frontend-sheen.herokuapp.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
