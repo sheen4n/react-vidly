@@ -55,8 +55,16 @@ const Form = ({ schema, submitAction, inputList, data, setData, setErrors, error
           />
         );
       case 'select':
-        console.log(dataSet);
-        return <Select name={name} value={data[name]} key={name} dataSet={dataSet} onChange={handleChange} error={errors[name]} />;
+        return (
+          <Select
+            name={name}
+            value={data[name]}
+            key={name}
+            dataSet={dataSet}
+            onChange={handleChange}
+            error={errors[name]}
+          />
+        );
       default:
         break;
     }
@@ -65,7 +73,7 @@ const Form = ({ schema, submitAction, inputList, data, setData, setErrors, error
   return (
     <form onSubmit={handleSubmit}>
       {inputList.map(input => renderInput(input))}
-      <button className='btn btn-primary' disabled={validateAll()}>
+      <button className="btn btn-primary" disabled={validateAll()}>
         {buttonLabel}
       </button>
     </form>

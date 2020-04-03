@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Joi from '@hapi/joi';
-import { getMovie, saveMovie } from '../services/fakeMovieService';
-import { getGenres } from '../services/fakeGenreService';
+import { getMovie, saveMovie } from '../services/movieService';
+import { getGenres } from '../services/genreService';
 
 import Form from './common/form';
 
@@ -49,14 +49,22 @@ const MovieForm = ({ match, history }) => {
   });
 
   useEffect(() => {
-    setGenres(getGenres());
+    async function loadGenres() {
+      const { data: genresData } = await getGenres();
+      setGenres(genresData);
+    }
+    async function loadMovie() {
+      try {
+        if (movieId === 'new') return;
+        const { data: movieFromDb } = await getMovie(movieId);
+        setMovie(mapToViewModel(movieFromDb));
+      } catch (ex) {
+        if (ex.response && ex.response.status === 404) return history.replace('/not-found');
+      }
+    }
 
-    if (movieId === 'new') return;
-
-    const movieFromDb = getMovie(movieId);
-
-    if (!movieFromDb) return history.replace('/not-found');
-    setMovie(mapToViewModel(movieFromDb));
+    loadGenres();
+    loadMovie();
   }, [movieId, history]);
 
   const submitAction = () => {
@@ -71,8 +79,6 @@ const MovieForm = ({ match, history }) => {
     { name: 'dailyRentalRate', label: 'Daily Rental Rate', type: 'number' }
   ];
 
-  console.log(movie);
-
   return (
     <div>
       <h1>Movie Form</h1>
@@ -84,7 +90,7 @@ const MovieForm = ({ match, history }) => {
         setData={setMovie}
         errors={errors}
         setErrors={setErrors}
-        buttonLabel='Save'
+        buttonLabel="Save"
       />
     </div>
   );
