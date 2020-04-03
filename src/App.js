@@ -36,6 +36,7 @@ const App = () => {
             <Route path="/customers" render={() => <Customers />} />
             <Route path="/logout" render={() => <Logout />} />
             <Route path="/not-found" render={NotFound} />
+            <Redirect exact from="/react-vidly" to="/movies" />
             <Redirect exact from="/" to="/movies" />
             <Redirect to="/not-found" />
           </Switch>
