@@ -1,3 +1,6 @@
+View Live Demo of application at either :
+(https://vidly-frontend-sheen.herokuapp.com/) or (https://sheen4n.github.io/react-vidly/)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
