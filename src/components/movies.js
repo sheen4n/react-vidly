@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import _ from 'lodash';
@@ -14,11 +14,22 @@ import ListGroup from './common/listGroup';
 import MoviesTable from './moviesTable';
 
 const Movies = ({ history }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const MAX_PAGE_SIZE = 4;
 
-  const { loadData, removeMovie, toggleMovieLike, selectPage, selectGenre, updateSortColumn, updateQuery, setAllMovies, reset, state } = useContext(
-    MoviesContext
-  );
+  const {
+    loadData,
+    removeMovie,
+    toggleMovieLike,
+    selectPage,
+    selectGenre,
+    updateSortColumn,
+    updateQuery,
+    setAllMovies,
+    reset,
+    removeMovieFromUi,
+    state,
+  } = useContext(MoviesContext);
 
   const { state: authState } = useContext(AuthContext);
 
@@ -34,10 +45,13 @@ const Movies = ({ history }) => {
 
   const handleDelete = async (movie) => {
     const moviesClone = _.cloneDeep(state.allMovies);
-
-    removeMovie(movie);
-
-    setAllMovies(moviesClone);
+    try {
+      // optimistic delete
+      removeMovieFromUi(movie);
+      await removeMovie(movie);
+    } catch (error) {
+      setAllMovies(moviesClone);
+    }
   };
 
   const handleLike = (movie) => {
@@ -53,8 +67,11 @@ const Movies = ({ history }) => {
   const handleSearch = (query) => updateQuery(query);
 
   const resetData = async () => {
+    setIsLoading(true);
     await reset(allMovies, genres);
-    history.push('/');
+    await loadDataFunc.current();
+    setIsLoading(false);
+    // history.push('/');
   };
 
   const getPagedData = () => {
@@ -74,20 +91,28 @@ const Movies = ({ history }) => {
 
   const { totalCount, movies } = getPagedData();
 
+  if (isLoading) return <h1>Reset Is Loading... Please wait!</h1>;
+
   return (
     <div className='row'>
       <div className='col-3'>
         <ListGroup items={genres} selectedItem={selectedGenre} onItemSelect={handleGenreSelect} />
       </div>
       <div className='col'>
-        {authState.user && (
-          <Link to='/movies/new' className='btn btn-primary' style={{ marginBottom: 20 }}>
-            New Movie
-          </Link>
+        {authState.user ? (
+          <>
+            <Link to='/movies/new' className='btn btn-primary' style={{ marginBottom: 20 }}>
+              New Movie
+            </Link>
+            <button onClick={resetData} className='btn btn-success ml-3' style={{ marginBottom: 20 }}>
+              Reset Data
+            </button>
+          </>
+        ) : (
+          <button className='btn btn-success ml-3' style={{ marginBottom: 20 }} disabled='disabled'>
+            Login to Reset Data
+          </button>
         )}
-        <button onClick={resetData} className='btn btn-success ml-3' style={{ marginBottom: 20 }}>
-          Reset Data
-        </button>
 
         <p>Displaying {totalCount} movies in the database...</p>
         <SearchBox query={query} onSearch={handleSearch} />

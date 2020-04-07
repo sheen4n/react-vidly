@@ -61,11 +61,12 @@ const loadData = (dispatch) => async () => {
 const removeMovie = (dispatch) => async (movie) => {
   try {
     await deleteMovie(movie._id);
-    dispatch({ type: 'remove_movie', payload: movie });
   } catch (ex) {
     if (ex.response && ex.response.status === 404) toast.error('This movie has already been deleted.');
   }
 };
+
+const removeMovieFromUi = (dispatch) => (movie) => dispatch({ type: 'remove_movie', payload: movie });
 
 const toggleMovieLike = (dispatch) => (movie) => dispatch({ type: 'toggle_movie_like', payload: movie });
 
@@ -105,6 +106,7 @@ export const { Context, Provider } = createDataContext(
     updateQuery,
     setAllMovies,
     reset,
+    removeMovieFromUi,
   },
   loadStorage(),
   'movies'
