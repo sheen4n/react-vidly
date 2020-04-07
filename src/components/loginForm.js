@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import Joi from '@hapi/joi';
 
 import { Context as AuthContext } from '../context/AuthContext';
-import { login } from '../services/authService';
 import Form from './common/form';
 import { Redirect } from 'react-router-dom';
 
@@ -11,40 +10,34 @@ const schema = {
     .required()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
     .label('Email'),
-  password: Joi.string()
-    .min(5)
-    .required()
-    .label('Password')
+  password: Joi.string().min(5).required().label('Password'),
 };
 
 const LoginForm = ({ history, location }) => {
   const [credentials, setCredentials] = useState({
     email: '',
-    password: ''
+    password: '',
   });
   const [errors, setErrors] = useState({});
 
-  const { setJwt, state: authState } = useContext(AuthContext);
+  const { loginUser, state: authState } = useContext(AuthContext);
 
   const submitAction = async () => {
     try {
-      const { data: jwt } = await login(credentials.email, credentials.password);
-      setJwt(jwt);
+      await loginUser(credentials);
       // Redirect Back if State Exist in Location
       location.state ? history.push(location.state.from.pathname) : history.push('/');
     } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        setErrors({ email: ex.response.data });
-      }
+      setErrors({ email: ex.message });
     }
   };
 
   const inputList = [
     { name: 'email', label: 'Email', autoFocus: true },
-    { name: 'password', label: 'Password', type: 'password' }
+    { name: 'password', label: 'Password', type: 'password' },
   ];
 
-  if (authState.user) return <Redirect to="/" />;
+  if (authState.user) return <Redirect to='/' />;
 
   return (
     <div>
@@ -57,7 +50,7 @@ const LoginForm = ({ history, location }) => {
         setData={setCredentials}
         errors={errors}
         setErrors={setErrors}
-        buttonLabel="Login"
+        buttonLabel='Login'
       />
       <hr />
       <p>Demo mode</p>
