@@ -4,7 +4,7 @@ import Input from './input';
 import Select from './select';
 
 const Form = ({ schema, submitAction, inputList, data, setData, setErrors, errors, buttonLabel }) => {
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     let errObj = validateAll();
     if (errObj) return setErrors(errObj);
@@ -33,7 +33,7 @@ const Form = ({ schema, submitAction, inputList, data, setData, setErrors, error
     if (!error) return null;
 
     let errObj = {};
-    error.details.map(item => (errObj[item.path[0]] = item.message));
+    error.details.map((item) => (errObj[item.path[0]] = item.message));
     return errObj;
   };
 
@@ -55,16 +55,7 @@ const Form = ({ schema, submitAction, inputList, data, setData, setErrors, error
           />
         );
       case 'select':
-        return (
-          <Select
-            name={name}
-            value={data[name]}
-            key={name}
-            dataSet={dataSet}
-            onChange={handleChange}
-            error={errors[name]}
-          />
-        );
+        return <Select name={name} value={data[name]} key={name} dataSet={dataSet} onChange={handleChange} error={errors[name]} label={label} />;
       default:
         break;
     }
@@ -72,8 +63,8 @@ const Form = ({ schema, submitAction, inputList, data, setData, setErrors, error
 
   return (
     <form onSubmit={handleSubmit}>
-      {inputList.map(input => renderInput(input))}
-      <button className="btn btn-primary" disabled={validateAll()}>
+      {inputList.map((input) => renderInput(input))}
+      <button className='btn btn-primary' disabled={validateAll()}>
         {buttonLabel}
       </button>
     </form>

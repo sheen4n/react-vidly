@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Select = ({ name, value, dataSet, onChange }) => {
+const Select = ({ name, value, dataSet, onChange, label }) => {
   return (
     <div className='form-group'>
-      <label htmlFor={name}>Select {name}</label>
+      <label htmlFor={name}>{label}</label>
       <select className='form-control' id={{ name }} name={name} value={value} onChange={onChange}>
         <option value=''>Please Select</option>
         {dataSet.map((option) => (
