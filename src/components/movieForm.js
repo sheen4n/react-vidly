@@ -7,23 +7,10 @@ import Form from './common/form';
 
 const schema = {
   _id: Joi.string(),
-  title: Joi.string()
-    .required()
-    .label('Title'),
-  genreId: Joi.string()
-    .required()
-    .label('Genre'),
-  numberInStock: Joi.number()
-    .integer()
-    .required()
-    .min(0)
-    .max(100)
-    .label('Number In Stock'),
-  dailyRentalRate: Joi.number()
-    .required()
-    .min(0)
-    .max(100)
-    .label('Daily Dental Rate')
+  title: Joi.string().min(5).required().label('Title'),
+  genreId: Joi.string().required().label('Genre'),
+  numberInStock: Joi.number().integer().required().min(0).max(100).label('Number In Stock'),
+  dailyRentalRate: Joi.number().required().min(0).max(100).label('Daily Dental Rate'),
 };
 
 const MovieForm = ({ match, history }) => {
@@ -33,19 +20,19 @@ const MovieForm = ({ match, history }) => {
     title: '',
     genreId: '',
     numberInStock: '',
-    dailyRentalRate: ''
+    dailyRentalRate: '',
   });
 
   const [genres, setGenres] = useState([]);
 
   const [errors, setErrors] = useState({});
 
-  const mapToViewModel = movie => ({
+  const mapToViewModel = (movie) => ({
     _id: movie._id,
     title: movie.title,
     genreId: movie.genre._id,
     numberInStock: movie.numberInStock,
-    dailyRentalRate: movie.dailyRentalRate
+    dailyRentalRate: movie.dailyRentalRate,
   });
 
   useEffect(() => {
@@ -76,7 +63,7 @@ const MovieForm = ({ match, history }) => {
     { name: 'title', label: 'Title', autoFocus: true },
     { name: 'genreId', label: 'Genre', type: 'select', dataSet: genres },
     { name: 'numberInStock', label: 'Number In Stock', type: 'number' },
-    { name: 'dailyRentalRate', label: 'Daily Rental Rate', type: 'number' }
+    { name: 'dailyRentalRate', label: 'Daily Rental Rate', type: 'number' },
   ];
 
   return (
@@ -90,7 +77,7 @@ const MovieForm = ({ match, history }) => {
         setData={setMovie}
         errors={errors}
         setErrors={setErrors}
-        buttonLabel="Save"
+        buttonLabel='Save'
       />
     </div>
   );

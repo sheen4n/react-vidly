@@ -6,23 +6,21 @@ import Form from './common/form';
 
 const schema = {
   email: Joi.string()
-    .required()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-    .label('Email'),
-  password: Joi.string()
-    .required()
     .min(5)
-    .label('Password'),
-  name: Joi.string()
+    .max(255)
     .required()
-    .label('Name')
+
+    .label('Email'),
+  password: Joi.string().min(5).max(1024).required().label('Password'),
+  name: Joi.string().required().label('Name'),
 };
 
 const RegisterForm = ({ history }) => {
   const [newUser, setNewUser] = useState({
     email: '',
     password: '',
-    name: ''
+    name: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -45,7 +43,7 @@ const RegisterForm = ({ history }) => {
   const inputList = [
     { name: 'email', label: 'Email', autoFocus: true },
     { name: 'password', label: 'Password', type: 'password' },
-    { name: 'name', label: 'Name' }
+    { name: 'name', label: 'Name' },
   ];
 
   return (
@@ -59,7 +57,7 @@ const RegisterForm = ({ history }) => {
         setData={setNewUser}
         errors={errors}
         setErrors={setErrors}
-        buttonLabel="Register"
+        buttonLabel='Register'
       />
     </div>
   );
