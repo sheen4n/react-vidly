@@ -24,7 +24,6 @@ const loginUser = (dispatch) => async (credentials) => {
     dispatch({ type: 'set_jwt', payload: { jwt, user: jwtDecode(jwt) } });
   } catch (ex) {
     if (ex.response && ex.response.status === 400) {
-      console.log(ex.response.status);
       throw new Error(ex.response.data);
     }
   }

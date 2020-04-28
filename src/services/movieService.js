@@ -6,24 +6,23 @@ function movieUrl(id) {
   return `${apiEndpoint}/${id}`;
 }
 
-export function getMovies() {
-  return http.get(apiEndpoint);
-}
+const getMovies = () => http.get(apiEndpoint);
 
-export function deleteMovie(movieId) {
-  return http.delete(movieUrl(movieId));
-}
+const deleteMovie = (movieId) => http.delete(movieUrl(movieId));
 
-export function getMovie(movieId) {
-  return http.get(movieUrl(movieId));
-}
+const getMovie = (movieId) => http.get(movieUrl(movieId));
 
-export function saveMovie(movie) {
-  if (movie._id) {
-    const body = { ...movie };
-    delete body._id;
-    return http.put(movieUrl(movie._id), body);
+const saveMovie = async (movie) => {
+  try {
+    if (movie._id) {
+      const body = { ...movie };
+      delete body._id;
+      return await http.put(movieUrl(movie._id), body);
+    }
+    return await http.post(apiEndpoint, movie);
+  } catch (error) {
+    throw new Error(error.message);
   }
-  console.log(movie);
-  return http.post(apiEndpoint, movie);
-}
+};
+
+export { saveMovie, getMovies, deleteMovie, getMovie };

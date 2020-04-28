@@ -54,9 +54,13 @@ const MovieForm = ({ match, history }) => {
     loadMovie();
   }, [movieId, history]);
 
-  const submitAction = () => {
-    saveMovie(movie);
-    history.push('/movies');
+  const submitAction = async () => {
+    try {
+      await saveMovie(movie);
+      history.push('/movies');
+    } catch (error) {
+      setErrors({ title: error.message });
+    }
   };
 
   const inputList = [
